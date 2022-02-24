@@ -1,4 +1,4 @@
-import { authService, createUser, signInUser } from "fbConfig";
+import { authService, createUser, signInUser, googleProvider, signInPopUp } from "fbConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import React, { useState } from "react";
 
@@ -47,18 +47,23 @@ const Authentication=()=>{
         // }
     }
     const toggleAccount =()=> setNewAccount((prev)=>!prev);
+    const onSocialClick =async(event)=>{
+        const provider = googleProvider();
+        const data = await signInPopUp(provider);
+        console.log(data);
+    };
     return(
         <div>
             <form onSubmit={onSubmit}>
                 <input onChange={onChange} name="email" placeholder="Email" required type="text" value={form.email}/>
                 <input onChange={onChange} name="password" placeholder="Password" required type="password" value={form.password}/>
                 <input type="submit" value={newAccount ? "Create Account":"Sign In"}/>
-                <p>{error}</p>
+                <span>{error}</span>
             </form>
             <span onClick={toggleAccount}>{newAccount ? "Sign in" : "Create Account"}</span>
             <div>
-                <button>Continue with Google</button>
-                <button>Continue with Emmail</button>
+                <button name="google" onClick={onSocialClick}>Continue with Google</button>
+                
             </div>
         </div>);
 }

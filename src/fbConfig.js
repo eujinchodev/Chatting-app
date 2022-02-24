@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut
+    } from "firebase/auth";
+    import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -16,3 +20,10 @@ export const authService = getAuth();
 export const createUser=(email, password) => createUserWithEmailAndPassword(authService, email, password);
 export const signInUser=(email, password) => signInWithEmailAndPassword(authService, email, password);
 export const changeUser=(user)=> onAuthStateChanged(authService, user);
+export const signInPopUp=(provider)=> signInWithPopup(authService, provider);
+export const googleProvider=()=> new GoogleAuthProvider();
+export const userSignOut=()=> signOut(authService);
+export const db = getFirestore();
+export const collect=(user)=> collection(db, user);
+export const addDocument =(user, data)=> addDoc(collect(user), data);
+export const getDoc =(user)=> getDocs(collect(user));
