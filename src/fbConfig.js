@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut
+    onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut,
     } from "firebase/auth";
-    import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+    import { getFirestore, collection, addDoc, getDocs, orderBy, query, onSnapshot,
+         doc, deleteDoc, updateDoc} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -23,7 +24,14 @@ export const changeUser=(user)=> onAuthStateChanged(authService, user);
 export const signInPopUp=(provider)=> signInWithPopup(authService, provider);
 export const googleProvider=()=> new GoogleAuthProvider();
 export const userSignOut=()=> signOut(authService);
+
 export const db = getFirestore();
-export const collect=(user)=> collection(db, user);
-export const addDocument =(user, data)=> addDoc(collect(user), data);
-export const getDoc =(user)=> getDocs(collect(user));
+export const collect=(path)=> collection(db, path);
+export const addDocument =(path, data)=> addDoc(collect(path), data);
+export const getDoc =(path)=> getDocs(collect(path));
+export const orderByCreated = (order)=> orderBy("createdAt", order);
+export const dbQuery =(path,order)=> query(collect(path),orderByCreated(order));
+export const snapshot = (query, snapshot) => onSnapshot(query, snapshot);
+export const document = (collectionName, id)=> doc(db, collectionName, id);
+export const deleteDocument =(willDeleteDoc)=> deleteDoc(willDeleteDoc);
+export const updateDocument =(willEditDoc, willReplacedData)=> updateDoc(willEditDoc, willReplacedData);

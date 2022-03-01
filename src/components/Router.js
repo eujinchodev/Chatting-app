@@ -6,7 +6,7 @@ import Home from "../routes/Home";
 import Nav from "./Nav";
 
 
-const AppRouter = ({isLoggedIn}) => {
+const AppRouter = ({isLoggedIn, userObj}) => {
     return(
     <Router>
         {isLoggedIn && <Nav/>}
@@ -16,7 +16,7 @@ const AppRouter = ({isLoggedIn}) => {
                 <>
                 <Route path="/profile" element={<Profile/>}>
                 </Route>
-                <Route path="/" element={<Home/>}>
+                <Route path="/" element={<Home userObj={userObj}/>}>
                 </Route>
                 </>
                 :
