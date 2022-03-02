@@ -1,4 +1,4 @@
-import { db, deleteDocument, updateDocument, document } from "fbConfig";
+import { db, deleteDocument, updateDocument, document, deleteObj } from "fbConfig";
 import React, { useState } from "react";
 
 const Chat=({chatObj, isOwner})=>{
@@ -9,6 +9,7 @@ const Chat=({chatObj, isOwner})=>{
         const ok = window.confirm("Are you sure you want to delete this chat?");
         if(ok){
             await deleteDocument(ChatRef);
+            await deleteObj(chatObj.downloadFileURL);
         }
     }
     const toggleEditing=()=>{
@@ -39,6 +40,8 @@ const Chat=({chatObj, isOwner})=>{
                 (
                     <>
                     <h4>{chatObj.chat}</h4>
+                    {chatObj.downloadFileURL && 
+                        (<img src={chatObj.downloadFileURL} height="50px" width="50px" alt="Loading"/>)}
                     {isOwner && (
                         <>
                             <button onClick={onDeleteClick}>Delete Chat</button>

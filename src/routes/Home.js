@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {addDocument, collect, getDoc, orderByCreated, dbQuery, snapshot} from "fbConfig";
-import { doc } from "firebase/firestore";
+import {
+    addDocument, collect, getDoc, orderByCreated, 
+    dbQuery, snapshot, storageService, refStorage, uploadStrings, downloadUrl
+    } from "fbConfig";
+//import { doc } from "firebase/firestore";
 import Chat from "components/Chat";
+import { v4 as uuidv4 } from 'uuid';
 // import { db } from "fbConfig";
 // import { addDoc, collection } from "firebase/firestore";
 
 const Home =({userObj})=> {
     const [chat, setChat]=useState("");
     const [chats, setChats]=useState([]);
-    const [previewFile, setPreviewFile] = useState();
+    const [previewFile, setPreviewFile] = useState("");
     // const getChats=async()=>{
     //     const getDbChats = await getDoc("chats");
     //     getDbChats.forEach((doc)=>{
@@ -39,13 +43,24 @@ const Home =({userObj})=> {
     const onSubmit= async (event)=>{
         event.preventDefault();
         try{
-            const docRef = await addDocument("chats", {
-                chat,
-                createdAt: Date.now(),
-                creatorId:userObj.uid,
-            });
+            let downloadFileURL ="";
+            if(previewFile!=""){
+                const fileRef = refStorage(`${userObj.uid}/${uuidv4()}`);
+                const response = await uploadStrings(fileRef, previewFile, "data_url");
+                downloadFileURL = await downloadUrl(response.ref);
+                console.log(response.ref);
+            }
+            const chatObj={
+                    chat,
+                    createdAt: Date.now(),
+                    creatorId:userObj.uid,
+                    downloadFileURL
+                };
+            const docRef = await addDocument("chats", chatObj);
             setChat("");
+            setPreviewFile("");
             console.log("Doc Ref : ", docRef);
+
             // const docRef = await addDoc(collection(db, "chats"), {
             //     chat,
             //     createdAt: Date.now(),
@@ -67,6 +82,7 @@ const Home =({userObj})=> {
             setPreviewFile(finishedEvent.currentTarget.result);
         }
         reader.readAsDataURL(file);
+        //console.log(file);
     }
     const onClearPhotoClick=()=> setPreviewFile(null);
     //console.log(chats);

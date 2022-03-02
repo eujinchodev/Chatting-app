@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
-import {
-    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut,
     } from "firebase/auth";
-    import { getFirestore, collection, addDoc, getDocs, orderBy, query, onSnapshot,
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, onSnapshot,
          doc, deleteDoc, updateDoc} from "firebase/firestore";
+import {getStorage, ref, uploadString, getDownloadURL, deleteObject} from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -35,3 +35,9 @@ export const snapshot = (query, snapshot) => onSnapshot(query, snapshot);
 export const document = (collectionName, id)=> doc(db, collectionName, id);
 export const deleteDocument =(willDeleteDoc)=> deleteDoc(willDeleteDoc);
 export const updateDocument =(willEditDoc, willReplacedData)=> updateDoc(willEditDoc, willReplacedData);
+
+export const storageService = getStorage();
+export const refStorage = (path) => ref(storageService, path);
+export const uploadStrings = (refData, value, metadata) => uploadString(refData, value, metadata);
+export const downloadUrl = (refData)=> getDownloadURL(refData);
+export const deleteObj= (willDeleteObjURL) =>deleteObject(refStorage(willDeleteObjURL));
