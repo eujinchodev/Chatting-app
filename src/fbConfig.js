@@ -3,7 +3,7 @@ import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut,
     } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, onSnapshot,
-         doc, deleteDoc, updateDoc} from "firebase/firestore";
+         doc, deleteDoc, updateDoc, where} from "firebase/firestore";
 import {getStorage, ref, uploadString, getDownloadURL, deleteObject} from "firebase/storage";
 
 const firebaseConfig = {
@@ -29,8 +29,9 @@ export const db = getFirestore();
 export const collect=(path)=> collection(db, path);
 export const addDocument =(path, data)=> addDoc(collect(path), data);
 export const getDoc =(path)=> getDocs(collect(path));
-export const orderByCreated = (order)=> orderBy("createdAt", order);
-export const dbQuery =(path,order)=> query(collect(path),orderByCreated(order));
+export const orderByCreated = (name, order)=> orderBy(name, order);
+export const dbQuery =(path, order)=> query(collect(path), order);
+export const docWhere =(name,op,state)=> where(name,op,state);
 export const snapshot = (query, snapshot) => onSnapshot(query, snapshot);
 export const document = (collectionName, id)=> doc(db, collectionName, id);
 export const deleteDocument =(willDeleteDoc)=> deleteDoc(willDeleteDoc);

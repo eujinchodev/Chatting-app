@@ -29,7 +29,7 @@ const Home =({userObj})=> {
     //     });
     //}
     useEffect(()=>{
-        const q = dbQuery("chats", "asc");
+        const q = dbQuery("chats", orderByCreated("createdAt", "asc"));
         snapshot(q, (shot)=>{
             const chatArr=shot.docs.map((doc)=>{
                 return{
