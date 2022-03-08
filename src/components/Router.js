@@ -9,7 +9,7 @@ import Nav from "./Nav";
 const AppRouter = ({isLoggedIn, userObj}) => {
     return(
     <Router>
-        {isLoggedIn && <Nav/>}
+        {isLoggedIn && <Nav userObj={userObj}/>}
         <Routes>
             {
                 isLoggedIn?
