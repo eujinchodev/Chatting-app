@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut,
+    onAuthStateChanged,signInWithPopup,GoogleAuthProvider, signOut, updateProfile
     } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, onSnapshot,
          doc, deleteDoc, updateDoc, where} from "firebase/firestore";
@@ -24,6 +24,7 @@ export const changeUser=(user)=> onAuthStateChanged(authService, user);
 export const signInPopUp=(provider)=> signInWithPopup(authService, provider);
 export const googleProvider=()=> new GoogleAuthProvider();
 export const userSignOut=()=> signOut(authService);
+export const updateProfiles=(user, name, newName)=> updateProfile(user, {name : newName});
 
 export const db = getFirestore();
 export const collect=(path)=> collection(db, path);
