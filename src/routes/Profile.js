@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { dbQuery, docWhere, collect, snapshot, orderByCreated, getDoc, userSignOut } from "fbConfig";
+import { dbQuery, docWhere, collect, snapshot, orderByCreated, getDoc, userSignOut, updateProfiles } from "fbConfig";
 import { getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { doc } from "firebase/firestore";
-import { updateProfile } from "firebase/auth";
 
-const Profile=({userObj})=>{
+const Profile=({refreshUser, userObj})=>{
     const [newDisplayName, setNewDisplayName]=useState(userObj.displayName);
     const navigate=useNavigate();
     const onLogOutClick=()=>{
@@ -31,7 +30,8 @@ const Profile=({userObj})=>{
         event.preventDefault();
         if(userObj.displayName !== newDisplayName){
             console.log("change");
-            await updateProfile(userObj, {displayName : newDisplayName});
+            await updateProfiles(userObj, {displayName : newDisplayName});
+            refreshUser();
         }
     };
     return(

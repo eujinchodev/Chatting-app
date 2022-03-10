@@ -24,7 +24,7 @@ export const changeUser=(user)=> onAuthStateChanged(authService, user);
 export const signInPopUp=(provider)=> signInWithPopup(authService, provider);
 export const googleProvider=()=> new GoogleAuthProvider();
 export const userSignOut=()=> signOut(authService);
-export const updateProfiles=(user, name, newName)=> updateProfile(user, {name : newName});
+export const updateProfiles=(user, arg)=> updateProfile(user, arg);
 
 export const db = getFirestore();
 export const collect=(path)=> collection(db, path);

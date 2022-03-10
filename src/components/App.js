@@ -7,6 +7,8 @@ function App() {
   const [init, setInit]=useState(false);
   const [isLoggedIn, setIsLoggedIn]=useState(false);
   const [userObj, setUserObj]=useState(null);
+  const [userNewName, setUserNewName] = useState(false);
+
   useEffect(()=>{
     changeUser((user)=>{
       if(user){
@@ -18,10 +20,13 @@ function App() {
       setInit(true);
     });
   },[]);
+  const refreshUser=()=>{
+    setUserNewName(prev=>!prev);
+  };
   return (
     <>
     {init ? 
-      (<AppRouter isLoggedIn={isLoggedIn} userObj={userObj}/> )
+      (<AppRouter refreshUser={refreshUser} isLoggedIn={isLoggedIn} userObj={userObj}/> )
       : ("initializing")}
     </>
   );
